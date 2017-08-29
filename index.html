@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My first Vue app</title>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head> 
+<body>
+ 
+
+  <div id="app">
+
+     <div class="tab">
+       <button class="tabLinks" onclick="openTab(event,'Peliculas')"> Peliculas </button>
+       <button class="tabLinks" onclick="openTab(event,'Entradas')"> Entradas </button>       
+     </div>
+
+     <div id="Peliculas" class="tabcontent">
+
+        <list-peliculas></list-peliculas>        
+        <detalle-pelicula></detalle-pelicula>
+     
+     </div>
+
+     <div id="Entradas" class="tabcontent">
+        <h1> Contenido Entradas </h1>  
+     </div> 
+     
+  </div>
+  
+  <script type="text/javascript">
+      function openTab(evt, idTab) {
+
+          var i, tabcontent, tablinks;
+
+          tabcontent = document.getElementsByClassName("tabcontent");
+          for (i = 0; i < tabcontent.length; i++) {
+              tabcontent[i].style.display = "none";
+          }
+          tablinks = document.getElementsByClassName("tablinks");
+          for (i = 0; i < tablinks.length; i++) {
+              tablinks[i].className = tablinks[i].className.replace("active", "");
+          }
+          document.getElementById(idTab).style.display = "block";
+          evt.currentTarget.className += "active";
+      }
+  </script>
+
+  <template id="lista">
+    <div id="list_container" > 
+      <h2> Lista de Peliculas </h2>         
+      <ul>  
+        <li v-for="item in Peliculas" v-on:click="mostrarDetalles(item)"> 
+          <div style="height: 50px;">
+           {{ item.titulo}} , {{item.pais}} , {{ item.genero}} , {{item.duracion}} 
+          </div>
+        </li>
+      </ul>
+    </div>
+  </template>
+
+  <template id="detalle">
+    <div id="detail_container" v-if="mostrar"> 
+        <h2> Detalles </h2>         
+        <div>
+            Titulo: <input type="text" v-model="objPeli.titulo"> </br>
+            Pais: <input type="text" v-model="objPeli.pais"> </br>
+            Genero: <input type="text" v-model="objPeli.genero"> </br>
+            Duracion: <input type="number" v-model="objPeli.duracion"> </br>
+        </div>
+        <div>
+          <button v-on:click="agregar"> Agregar </button>
+          <button v-on:click="actualizar"> Actualizar </button>
+          <button v-on:click="eliminar"> Eliminar </button>
+        </div>
+    </div>
+  </template>
+    
+  <script type="text/javascript" src="/index.js"></script>
+</body>
+</html>
