@@ -34,6 +34,12 @@ Vue.component("list-peliculas",{
             bus.$emit("Mostrar", true);  
         }
     },
+    created(){
+        bus.$on("Peliculas", (data) =>{
+            this.Peliculas = data;
+            console.log("Peliculas: "+ data)
+        });
+    }
     
 }); 
 
@@ -41,48 +47,64 @@ Vue.component("detalle-pelicula",{
     template: "#detalle",    
     data: function () {
         return {
-          mostrar:false,
+          mostrar: false,
           objPeli:{}
         }
     },
     methods: {
         agregar: function(){        
+            var _this = this;
             $.ajax({                    
                 url: "http://10.60.23.22:52355/api/Peliculas/" ,
                 type: "POST",
                 data: this.objPeli                
-            }).done(function(response){
+            }).done(function(response){                
                 alert("Pelicula Creada:"+ response.titulo )
-                console.log(response);                
+                _this.refrescarLista();              
             }).fail(function(err){
                 console.log(err);         
             });        
         },  
-        actualizar: function(event){            
+        actualizar: function(){    
+            var _this = this;            
             $.ajax({
                 url: "http://10.60.23.22:52355/api/Peliculas/" + this.objPeli.id,
                 type: "PUT",                
                 data: this.objPeli,
             })
-            .done(function(data) {
-                alert( "Se ha actualizado la pelicula");
+            .done(function(data) {                  
+                alert( "Se ha actualizado la pelicula");                 
+                //_this.refrescarLista();
             })
             .fail(function(err){
                 console.log(err);
             });
         },
-        eliminar: function(event){
+        eliminar: function(){    
+            var _this = this;        
              $.ajax({
                 url: "http://10.60.23.22:52355/api/Peliculas/" + this.objPeli.id,
                 type: "DELETE",                
                 data: this.objPeli,
             })
-            .done(function(data) {
-                alert( "Se eliminado la pelicula");               
+            .done(function(data) {                                
+                alert( "Se ha eliminado la pelicula");   
+                _this.refrescarLista();            
             })
             .fail(function(err){
                 console.log(err);
             });
+        },
+        refrescarLista: function(){
+            $.ajax({
+                url: "http://10.60.23.22:52355/api/Peliculas/" ,
+                type: "GET"      
+            }).done(function(response){
+                bus.$emit("Peliculas",response);
+                console.log(response);                
+            }).fail(function(err){          
+                console.log(err);         
+            });   
         }
     },
     created(){
