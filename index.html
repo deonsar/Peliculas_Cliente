@@ -25,6 +25,11 @@
 
      <div id="Entradas" class="tabcontent">
         <h1> Contenido Entradas </h1>  
+
+        <list-entradas></list-entradas>       
+        <detalle-entrada></detalle-entrada>
+
+
      </div> 
      
   </div>
@@ -46,9 +51,9 @@
       }
   </script>
 
-  <template id="lista">
+  <template id="list-peliculas">
     <div id="list_container" > 
-      <h2> Lista de Peliculas </h2>         
+      <h2> Peliculas </h2>         
       <ul>  
         <li v-for="item in Peliculas" v-on:click="mostrarDetalles(item)"> 
           <div style="height: 50px;">
@@ -59,7 +64,7 @@
     </div>
   </template>
 
-  <template id="detalle">
+  <template id="detalle-pelicula">
     <div id="detail_container" v-if="mostrar"> 
         <h2> Detalles </h2>         
         <div>
@@ -76,6 +81,38 @@
     </div>
   </template>
 
+  <template id="list-entradas">
+    <div id="list_container" > 
+      <h2> Entradas Registradas </h2>         
+      <ul>  
+        <li v-for="item in Entradas" v-on:click="mostrarDetalles(item)"> 
+          <div style="height: 50px;">
+           {{ item.sala}} , {{item.fila}} , {{ item.asiento}} 
+          </div>
+        </li>
+      </ul>
+    </div>
+  </template>
+
+  <template id="detalle-entrada">
+    <div id="detail_container" v-if="mostrar"> 
+        <h2> Detalles </h2>         
+        <div>
+            Sala: <input type="text" v-model="objDet.sala"> </br>
+            Fila: <input type="text" v-model="objDet.fila"> </br>
+            Asiento: <input type="text" v-model="objDet.asiento"> </br>
+        </div>
+        <div>
+          <button v-on:click="agregar"> Agregar </button>
+          <button v-on:click="actualizar"> Actualizar </button>
+          <button v-on:click="eliminar"> Eliminar </button>
+        </div>
+    </div>
+  </template>
+
+  <script type="text/javascript" src="/componentPeliculas.js"></script>
+  <script type="text/javascript" src="/componentEntradas.js"></script>
   <script type="text/javascript" src="/index.js"></script>
+  
 </body>
 </html>
